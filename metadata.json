@@ -1,0 +1,9 @@
+{
+  "name": "ByeWall",
+  "description": "Paywall bypass aggregator",
+  "uuid": "vinabyewall@gmail.com",
+  "shell-version": [
+    "44"
+  ],
+  "version": 1
+}

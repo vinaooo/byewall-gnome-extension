@@ -1,0 +1,20 @@
+.popup-combobox-box StButton {
+    background-color: #e0e0e0;
+    border-radius: 16px;
+    padding: 6px 16px;
+    font-weight: 400;
+    color: #616161;
+    margin-right: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: background-color 0.2s ease-in-out;
+    }
+    .popup-combobox-box StButton:last-child {
+    margin-right: 0;
+    }
+    .popup-combobox-box StButton:focus,
+    .popup-combobox-box StButton:hover {
+    background-color: #bdbdbd;
+    }
