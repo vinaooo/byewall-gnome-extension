@@ -1,6 +1,6 @@
-const GETTEXT_DOMAIN = 'my-indicator-extension';
+const GETTEXT_DOMAIN = 'byewall';
 
-const {  GObject, St, Gio } = imports.gi;
+const { GObject, St, Gio, Gtk, Gdk } = imports.gi;
 const GLib = imports.gi.GLib;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
@@ -9,6 +9,8 @@ const PopupMenu = imports.ui.popupMenu;
 
 const _ = ExtensionUtils.gettext;
 
+let url = "https://12ft.io/";
+
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
     
@@ -16,34 +18,34 @@ class Indicator extends PanelMenu.Button {
         super._init(0.0, _('My Shiny Indicator'));
     
         this.add_child(new St.Icon({
-            icon_name: 'face-smile-symbolic',
+            icon_name: 'emblem-documents',
             style_class: 'system-status-icon',
         }));
     
-        let submenuItem = new PopupMenu.PopupSubMenuMenuItem(_("Options"));
+        let submenuItem = new PopupMenu.PopupSubMenuMenuItem(_("Services"));
         this.menu.addMenuItem(submenuItem);
     
-        let item1 = new PopupMenu.PopupMenuItem(_('Show Notification'));
+        let item1 = new PopupMenu.PopupMenuItem(_('12ft.io'));
         item1.connect('activate', () => {
-            Main.notify(entry.get_text());
+            submenuItem.setOpen(true);
         });
         submenuItem.menu.addMenuItem(item1);
     
-        let item2 = new PopupMenu.PopupMenuItem(_('Open Google'));
+        let item2 = new PopupMenu.PopupMenuItem(_('Archive.is'));
         item2.connect('activate', () => {
-            Gio.app_info_launch_default_for_uri('https://www.google.com');
+            submenuItem.setOpen(true);
         });
         submenuItem.menu.addMenuItem(item2);
     
-        let item3 = new PopupMenu.PopupMenuItem(_('Open Wikipedia'));
+        let item3 = new PopupMenu.PopupMenuItem(_('RemovePaywall.com'));
         item3.connect('activate', () => {
-            Gio.app_info_launch_default_for_uri('https://www.wikipedia.org');
+            submenuItem.setOpen(true);
         });
         submenuItem.menu.addMenuItem(item3);
     
-        let item4 = new PopupMenu.PopupMenuItem(_('Open Reddit'));
+        let item4 = new PopupMenu.PopupMenuItem(_('LeiaIsso.net'));
         item4.connect('activate', () => {
-            Gio.app_info_launch_default_for_uri('https://www.reddit.com');
+            submenuItem.setOpen(true);
         });
         submenuItem.menu.addMenuItem(item4);
     
@@ -53,17 +55,30 @@ class Indicator extends PanelMenu.Button {
             reactive: false,
         });
     
+        let entryBox = new St.BoxLayout({
+            style_class: 'entry-box',
+            width: 300,
+        });
+    
         let entry = new St.Entry({
             name: 'entry',
             hint_text: 'Type here...',
+            width: 280,
         });
     
-        entryItem.actor.add_child(entry);
+        entryBox.add(entry);
+        entryItem.actor.add_child(entryBox);
         this.menu.addMenuItem(entryItem);
-        
-
     
-    }});    
+        entry.clutter_text.connect('activate', () => {
+            let text = entry.get_text(); //enter
+        });
+    
+        entryBox.add(entry);
+        entryItem.actor.add_child(entryBox);
+        this.menu.addMenuItem(entryItem);
+    }
+    });    
 
 
 class Extension {
@@ -84,6 +99,7 @@ class Extension {
             'visible',
             Gio.SettingsBindFlags.DEFAULT
         );
+
         Main.panel.addToStatusArea(this._uuid, this._indicator);
     }
 
